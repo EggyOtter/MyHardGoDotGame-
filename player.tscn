@@ -1,0 +1,104 @@
+[gd_scene load_steps=16 format=3 uid="uid://blspvpjlcrgyu"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_thpy8"]
+[ext_resource type="AudioStream" uid="uid://s6dtm1er65ha" path="res://110114__ryansnook__nuclear-explosion.ogg" id="2_lu61y"]
+[ext_resource type="AudioStream" uid="uid://cocyhiwym7306" path="res://wompwomp.ogg" id="3_vgylb"]
+[ext_resource type="AudioStream" uid="uid://b38ehlxwg7xss" path="res://winsound.ogg" id="4_c1bay"]
+[ext_resource type="AudioStream" uid="uid://df53g3xx3fj0x" path="res://SFX - Main engine thrust.ogg" id="4_poxjq"]
+[ext_resource type="PackedScene" uid="uid://csx7m8wadv7dp" path="res://booster_particles.tscn" id="6_gpke6"]
+[ext_resource type="PackedScene" uid="uid://bmbto3bmviqll" path="res://explosion_particles.tscn" id="7_h5hmx"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bfm1s"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_28d1v"]
+albedo_color = Color(0.25098, 1, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8efw6"]
+material = SubResource("StandardMaterial3D_28d1v")
+
+[sub_resource type="Gradient" id="Gradient_nb8e5"]
+offsets = PackedFloat32Array(0, 0.195122, 0.53252, 0.918699, 1)
+colors = PackedColorArray(0.0313726, 0.792157, 0, 0.580392, 0, 0.788235, 0.788235, 0.619608, 0.0784314, 0, 0.858824, 0.623529, 0.261749, 0.000716811, 0.443093, 0.545098, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4xlb6"]
+gradient = SubResource("Gradient_nb8e5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fv58d"]
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_4xlb6")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ghwoc"]
+transparency = 1
+vertex_color_use_as_albedo = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ximys"]
+material = SubResource("StandardMaterial3D_ghwoc")
+
+[node name="Player" type="RigidBody3D"]
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+max_contacts_reported = 10
+contact_monitor = true
+linear_damp = 1.0
+angular_damp = 3.0
+script = ExtResource("1_thpy8")
+
+[node name="NotUsedBoosterParticles" type="Node" parent="."]
+
+[node name="BoosterParticles" parent="NotUsedBoosterParticles" instance=ExtResource("6_gpke6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+emitting = false
+
+[node name="RightBoosterParticles" parent="NotUsedBoosterParticles" instance=ExtResource("6_gpke6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.8, 0)
+emitting = false
+
+[node name="LeftBoosterParticles" parent="NotUsedBoosterParticles" instance=ExtResource("6_gpke6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, -0.8, 0)
+emitting = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_bfm1s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_8efw6")
+
+[node name="ExplosionAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_lu61y")
+
+[node name="DeathAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_vgylb")
+
+[node name="RocketAudio" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_poxjq")
+
+[node name="WinAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_c1bay")
+
+[node name="CloneParticles" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 1000
+lifetime = 30.0
+process_material = SubResource("ParticleProcessMaterial_fv58d")
+draw_pass_1 = SubResource("CapsuleMesh_ximys")
+
+[node name="ExplosionParticles" parent="." instance=ExtResource("7_h5hmx")]
+
+[node name="ExplosionParticles2" parent="." instance=ExtResource("7_h5hmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.801702, 0)
+
+[node name="ExplosionParticles3" parent="." instance=ExtResource("7_h5hmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.796033, 0)
+
+[node name="ExplosionParticles4" parent="." instance=ExtResource("7_h5hmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.704628, -0.0427185, 0)
+
+[node name="ExplosionParticles5" parent="." instance=ExtResource("7_h5hmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.727008, -0.0427185, 0)
+
+[node name="Node" type="Node" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,124 @@
+[gd_scene load_steps=10 format=3 uid="uid://driqw6wpljxy8"]
+
+[ext_resource type="Script" path="res://LandingPad.gd" id="1_p12wu"]
+[ext_resource type="PackedScene" uid="uid://blspvpjlcrgyu" path="res://player.tscn" id="2_be5vk"]
+[ext_resource type="PackedScene" uid="uid://cx4mg52w6w7wg" path="res://moving_hazard.tscn" id="3_3t4lk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rslcn"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_g3ktt"]
+sky_material = SubResource("ProceduralSkyMaterial_rslcn")
+
+[sub_resource type="Environment" id="Environment_c4b1g"]
+background_mode = 2
+sky = SubResource("Sky_g3ktt")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m6am8"]
+albedo_color = Color(0.262745, 0.105882, 0.0117647, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_reakj"]
+albedo_color = Color(0.0823529, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ou3o3"]
+albedo_color = Color(0.0705882, 0, 0.478431, 1)
+
+[node name="Level" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_c4b1g")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="CSGBox3D" parent="." groups=["Death"]]
+transform = Transform3D(2.37077, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0)
+use_collision = true
+size = Vector3(30, 8, 5)
+material = SubResource("StandardMaterial3D_m6am8")
+
+[node name="Floor2" type="CSGBox3D" parent="." groups=["Death"]]
+transform = Transform3D(2.37077, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.7209, 0)
+use_collision = true
+size = Vector3(30, 8, 5)
+material = SubResource("StandardMaterial3D_m6am8")
+
+[node name="Floor3" type="CSGBox3D" parent="." groups=["Death"]]
+transform = Transform3D(-1.0363e-07, -1, 0, 2.37077, -4.37114e-08, 0, 0, 0, 1, -38.8587, 29.7209, 0)
+use_collision = true
+size = Vector3(30, 8, 5)
+material = SubResource("StandardMaterial3D_m6am8")
+
+[node name="Floor4" type="CSGBox3D" parent="." groups=["Death"]]
+transform = Transform3D(-1.0363e-07, -1, 0, 2.37077, -4.37114e-08, 0, 0, 0, 1, 37.5505, 29.7209, 0)
+use_collision = true
+size = Vector3(30, 8, 5)
+material = SubResource("StandardMaterial3D_m6am8")
+
+[node name="LandingPad" type="CSGBox3D" parent="." groups=["Goal"]]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 25, -0.5, 0)
+use_collision = true
+material = SubResource("StandardMaterial3D_reakj")
+script = ExtResource("1_p12wu")
+file_path = "res://level_3.tscn"
+
+[node name="Player" parent="." instance=ExtResource("2_be5vk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.0577, 1.64982, 0.00685883)
+thrust = 2000.0
+
+[node name="LaunchPad" type="CSGBox3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -25, -0.5, 0)
+use_collision = true
+material = SubResource("StandardMaterial3D_ou3o3")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0715263, 11.6668, 24.3887)
+
+[node name="MovingHazard" parent="." instance=ExtResource("3_3t4lk")]
+transform = Transform3D(2, 0, 0, 0, 6.06753, 0, 0, 0, 2, 37.79, 8.317, 0)
+destination = Vector3(-300, 0, 0)
+duration = 20.0
+
+[node name="MovingHazard2" parent="." instance=ExtResource("3_3t4lk")]
+transform = Transform3D(2, 0, 0, 0, 6.06753, 0, 0, 0, 2, 67.79, 17, 0)
+destination = Vector3(-300, 0, 0)
+duration = 20.0
+
+[node name="MovingHazard3" parent="." instance=ExtResource("3_3t4lk")]
+transform = Transform3D(2, 0, 0, 0, 6.06753, 0, 0, 0, 2, 97.79, 8.317, 0)
+destination = Vector3(-300, 0, 0)
+duration = 20.0
+
+[node name="MovingHazard4" parent="." instance=ExtResource("3_3t4lk")]
+transform = Transform3D(2, 0, 0, 0, 6.06753, 0, 0, 0, 2, 127.79, 17, 0)
+destination = Vector3(-300, 0, 0)
+duration = 20.0
+
+[node name="MovingHazard5" parent="." instance=ExtResource("3_3t4lk")]
+transform = Transform3D(2, 0, 0, 0, 6.06753, 0, 0, 0, 2, 157.79, 8.317, 0)
+destination = Vector3(-300, 0, 0)
+duration = 20.0
+
+[node name="MovingHazard6" parent="." instance=ExtResource("3_3t4lk")]
+transform = Transform3D(2, 0, 0, 0, 6.06753, 0, 0, 0, 2, 187.79, 17, 0)
+destination = Vector3(-300, 0, 0)
+duration = 20.0
+
+[node name="MovingHazard7" parent="." instance=ExtResource("3_3t4lk")]
+transform = Transform3D(2, 0, 0, 0, 6.06753, 0, 0, 0, 2, 217.79, 8.317, 0)
+destination = Vector3(-300, 0, 0)
+duration = 20.0
+
+[node name="MovingHazard8" parent="." instance=ExtResource("3_3t4lk")]
+transform = Transform3D(2, 0, 0, 0, 6.06753, 0, 0, 0, 2, 249.797, 17, 0)
+destination = Vector3(-300, 0, 0)
+duration = 20.0
+
+[node name="MovingHazard9" parent="." instance=ExtResource("3_3t4lk")]
+transform = Transform3D(2, 0, 0, 0, 6.06753, 0, 0, 0, 2, -25.1787, -9.7109, 0)
+destination = Vector3(0, 2, 0)
+duration = 2.0
